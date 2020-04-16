@@ -6,15 +6,17 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
-	"github.com/judascrow/go-api-crud/app/infrastructure"
-	"github.com/judascrow/go-api-crud/app/models"
-	"github.com/judascrow/go-api-crud/app/routes"
+	"github.com/judascrow/go-api-crud/api/infrastructure"
+	"github.com/judascrow/go-api-crud/api/middlewares"
+	"github.com/judascrow/go-api-crud/api/models"
+	"github.com/judascrow/go-api-crud/api/routes"
 )
 
 func init() {
@@ -44,19 +46,22 @@ func Run() {
 
 	migrate(database)
 
-	gin.ForceConsoleColor()
-	if os.Getenv("GIN_MODE") == "release" {
-		gin.SetMode(gin.ReleaseMode)
-	}
+	gin.SetMode(os.Getenv("SERVER_RUN_MODE"))
 
-	app := gin.Default()
-
-	routes.ApplyRoutes(app)
+	r := routes.InitRouter()
+	defer middlewares.CloseLogFile()
 
 	port := os.Getenv("SERVER_PORT")
+	readTimeoutInt, _ := strconv.Atoi(os.Getenv("SERVER_READ_TIMEOUT"))
+	writeTimeoutInt, _ := strconv.Atoi(os.Getenv("SERVER_WRITE_TIMEOUT"))
+	readTimeout := time.Duration(readTimeoutInt) * time.Second
+	writeTimeout := time.Duration(writeTimeoutInt) * time.Second
 	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: app,
+		Addr:           ":" + port,
+		Handler:        r,
+		ReadTimeout:    readTimeout,
+		WriteTimeout:   writeTimeout,
+		MaxHeaderBytes: 1 << 20,
 	}
 	go func() {
 		// service connections
@@ -70,13 +75,9 @@ func Run() {
 	// Wait for interrupt signal to gracefully shutdown the server with
 	// a timeout of 5 seconds.
 	quit := make(chan os.Signal, 1)
-	// kill (no param) default send syscall.SIGTERM
-	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall.SIGKILL but can't be catch, so don't need add it
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Println("Shutdown Server ...")
-
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {

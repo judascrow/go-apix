@@ -1,6 +1,6 @@
 package main
 
-import "github.com/judascrow/go-api-crud/app"
+import app "github.com/judascrow/go-api-crud/api"
 
 func main() {
 
