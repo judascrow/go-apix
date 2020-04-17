@@ -17,7 +17,11 @@ func InitRouter() *gin.Engine {
 		return
 	})
 
-	r.Use(middlewares.CustomLogger(), middlewares.CorsMiddleware())
+	r.Use(middlewares.CustomLoggerZap(), middlewares.CorsMiddleware())
+	if os.Getenv("APP_ENV") == "dev" {
+		gin.ForceConsoleColor()
+		r.Use(gin.Logger())
+	}
 	r.Use(gin.Recovery())
 
 	apiv1 := r.Group(os.Getenv("APP_API_BASE_URL"))
