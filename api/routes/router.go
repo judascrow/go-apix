@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/judascrow/go-api-crud/api/middlewares"
+	"github.com/judascrow/gomiddlewares"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
@@ -35,7 +35,7 @@ func InitRouter() *gin.Engine {
 	})
 
 	// middlewares
-	r.Use(middlewares.CustomLoggerZap(), middlewares.CorsMiddleware())
+	r.Use(gomiddlewares.GoLogger(), gomiddlewares.GoCors())
 	if os.Getenv("APP_ENV") == "dev" {
 		gin.ForceConsoleColor()
 		r.Use(gin.Logger())

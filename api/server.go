@@ -10,13 +10,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/judascrow/gomiddlewares"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
-	"github.com/judascrow/go-api-crud/api/infrastructure"
-	"github.com/judascrow/go-api-crud/api/middlewares"
-	"github.com/judascrow/go-api-crud/api/models"
-	"github.com/judascrow/go-api-crud/api/routes"
+	"github.com/judascrow/go-api-starter/api/infrastructure"
+	"github.com/judascrow/go-api-starter/api/models"
+	"github.com/judascrow/go-api-starter/api/routes"
 )
 
 func init() {
@@ -49,7 +50,7 @@ func Run() {
 	gin.SetMode(os.Getenv("SERVER_RUN_MODE"))
 
 	r := routes.InitRouter()
-	defer middlewares.CloseLogFile()
+	defer gomiddlewares.CloseLogFile()
 
 	port := os.Getenv("SERVER_PORT")
 	readTimeoutInt, _ := strconv.Atoi(os.Getenv("SERVER_READ_TIMEOUT"))
