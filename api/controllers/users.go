@@ -39,17 +39,18 @@ func GetUser(c *gin.Context) {
 	id := c.Param("id")
 	userID, err := strconv.Atoi(id)
 	if err != nil {
-		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		errMessage := "invalid syntax"
+		responses.ERROR(c, http.StatusBadRequest, errMessage)
 		return
 	}
 
-	user, err := services.FindOneUser(uint(userID))
+	user, err := services.FindOneUserByID(uint(userID))
 	if err != nil {
-		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		responses.ERROR(c, http.StatusNotFound, err.Error())
 		return
 	}
 
-	responses.JSON(c, http.StatusOK, user.Serialize())
+	responses.JSON(c, http.StatusOK, user.Serialize(), nil)
 }
 
 func CreateUser(c *gin.Context) {
@@ -62,6 +63,21 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	condUsername := models.User{Username: user.Username}
+	_, err = services.FindOneUser(condUsername)
+	if err == nil {
+		errMessage := "username is already exists"
+		responses.ERROR(c, http.StatusNotFound, errMessage)
+		return
+	}
+	condEmail := models.User{Email: user.Email}
+	_, err = services.FindOneUser(condEmail)
+	if err == nil {
+		errMessage := "email is already exists"
+		responses.ERROR(c, http.StatusNotFound, errMessage)
+		return
+	}
+
 	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(password)
 
@@ -70,5 +86,5 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	responses.JSON(c, http.StatusCreated, user.Serialize())
+	responses.JSON(c, http.StatusCreated, user.Serialize(), "user created success")
 }

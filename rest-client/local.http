@@ -16,8 +16,8 @@ GET {{baseUrl}}/users
 POST {{baseUrl}}/users
 
 {
-	"username": "user01",
-	"email": "user01@email.com",
+	"username": "user05",
+	"email": "user05@email.com",
 	"firstName": "john",
 	"lastName": "doe",
 	"password": "12345678"

@@ -20,9 +20,16 @@ func FindAllUsers(pageSizeStr, pageStr string) ([]models.User, PageMeta, error) 
 	return users, pageMeta, err
 }
 
-func FindOneUser(id uint) (models.User, error) {
+func FindOneUserByID(id uint) (models.User, error) {
 	db := infrastructure.GetDB()
 	var user models.User
 	err := db.First(&user, id).Error
+	return user, err
+}
+
+func FindOneUser(condition interface{}) (models.User, error) {
+	db := infrastructure.GetDB()
+	var user models.User
+	err := db.Where(condition).First(&user).Error
 	return user, err
 }

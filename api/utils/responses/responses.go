@@ -9,11 +9,14 @@ import (
 	"github.com/judascrow/go-api-starter/api/services"
 )
 
-func JSON(c *gin.Context, statusCode int, data interface{}) {
+var empty map[string]interface{}
+
+func JSON(c *gin.Context, statusCode int, data interface{}, message interface{}) {
 	c.JSON(statusCode, gin.H{
 		"status":     statusCode,
 		"statusText": http.StatusText(statusCode),
 		"data":       data,
+		"message":    message,
 	})
 
 }
@@ -56,14 +59,17 @@ func JSONLIST(c *gin.Context, statusCode int, data interface{}, p services.PageM
 		"statusText": http.StatusText(statusCode),
 		"data":       data,
 		"pageMeta":   pageMeta,
+		"message":    empty,
 	})
 
 }
 
 func ERROR(c *gin.Context, statusCode int, errors interface{}) {
+
 	c.JSON(statusCode, gin.H{
 		"status":     statusCode,
 		"statusText": http.StatusText(statusCode),
+		"data":       empty,
 		"message":    errors,
 	})
 }
