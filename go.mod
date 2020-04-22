@@ -10,4 +10,5 @@ require (
 	github.com/prometheus/client_golang v1.5.1 // indirect
 	github.com/sirupsen/logrus v1.5.0 // indirect
 	github.com/zsais/go-gin-prometheus v0.1.0
+	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
 )

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/judascrow/go-api-starter/api/controllers"
 	"github.com/judascrow/gomiddlewares"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
@@ -17,16 +18,7 @@ func InitRouter() *gin.Engine {
 	// Prometheus
 	p := ginprometheus.NewPrometheus("gin")
 	p.Use(r)
-	p.ReqCntURLLabelMappingFn = func(c *gin.Context) string {
-		url := c.Request.URL.Path
-		for _, p := range c.Params {
-			if p.Key == "id" {
-				url = strings.Replace(url, p.Value, ":id", 1)
-				break
-			}
-		}
-		return url
-	}
+	p.ReqCntURLLabelMappingFn = mappingFn
 
 	r.HandleMethodNotAllowed = true
 	r.NoMethod(func(c *gin.Context) {
@@ -47,6 +39,13 @@ func InitRouter() *gin.Engine {
 
 	apiv1.GET("/healthcheck", healthcheck)
 
+	users := apiv1.Group("/users")
+	{
+		users.GET("", controllers.ListUsers)
+		users.GET("/:id", controllers.GetUser)
+		users.POST("", controllers.CreateUser)
+	}
+
 	return r
 }
 
@@ -56,4 +55,15 @@ func healthcheck(c *gin.Context) {
 		"message": "API is Online",
 	})
 
+}
+
+func mappingFn(c *gin.Context) string {
+	url := c.Request.URL.Path
+	for _, p := range c.Params {
+		if p.Key == "id" {
+			url = strings.Replace(url, p.Value, ":id", 1)
+			break
+		}
+	}
+	return url
 }

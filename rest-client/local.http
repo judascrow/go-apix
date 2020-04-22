@@ -6,3 +6,21 @@
 GET {{baseUrl}}/healthcheck
 
 ###
+
+# @name ListUsers
+GET {{baseUrl}}/users
+
+###
+
+# @name CreateUser
+POST {{baseUrl}}/users
+
+{
+	"username": "user01",
+	"email": "user01@email.com",
+	"firstName": "john",
+	"lastName": "doe",
+	"password": "12345678"
+}
+
+###
