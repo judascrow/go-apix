@@ -41,8 +41,8 @@ func InitRouter() *gin.Engine {
 
 	users := apiv1.Group("/users")
 	{
-		users.GET("", controllers.ListUsers)
-		users.GET("/:id", controllers.GetUser)
+		users.GET("", controllers.GetAllUsers)
+		users.GET("/:slug", controllers.GetUserBySlug)
 		users.POST("", controllers.CreateUser)
 	}
 

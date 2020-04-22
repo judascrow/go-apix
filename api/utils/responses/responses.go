@@ -3,25 +3,26 @@ package responses
 import (
 	"fmt"
 	"math"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/judascrow/go-api-starter/api/services"
 )
 
-var empty map[string]interface{}
+type empty map[string]interface{}
 
-func JSON(c *gin.Context, statusCode int, data interface{}, message interface{}) {
+func JSON(c *gin.Context, statusCode int, dataName string, data interface{}, message interface{}) {
 	c.JSON(statusCode, gin.H{
-		"status":     statusCode,
-		"statusText": http.StatusText(statusCode),
-		"data":       data,
-		"message":    message,
+		"status":  statusCode,
+		"success": true,
+		"data": map[string]interface{}{
+			dataName: data,
+		},
+		"message": message,
 	})
 
 }
 
-func JSONLIST(c *gin.Context, statusCode int, data interface{}, p services.PageMeta) {
+func JSONLIST(c *gin.Context, statusCode int, dataName string, data interface{}, message interface{}, p services.PageMeta) {
 
 	pageSize := p.PageSize
 	page := p.Page
@@ -55,11 +56,14 @@ func JSONLIST(c *gin.Context, statusCode int, data interface{}, p services.PageM
 	pageMeta["prevPageUrl"] = fmt.Sprintf("%s?page=%d&pageSize=%d", c.Request.URL.Path, pageMeta["prevPageNumber"], pageMeta["requestedPageSize"])
 
 	c.JSON(statusCode, gin.H{
-		"status":     statusCode,
-		"statusText": http.StatusText(statusCode),
-		"data":       data,
-		"pageMeta":   pageMeta,
-		"message":    empty,
+		"status":  statusCode,
+		"success": true,
+		"data": map[string]interface{}{
+			dataName:   data,
+			"pageMeta": pageMeta,
+		},
+
+		"message": message,
 	})
 
 }
@@ -67,9 +71,9 @@ func JSONLIST(c *gin.Context, statusCode int, data interface{}, p services.PageM
 func ERROR(c *gin.Context, statusCode int, errors interface{}) {
 
 	c.JSON(statusCode, gin.H{
-		"status":     statusCode,
-		"statusText": http.StatusText(statusCode),
-		"data":       empty,
-		"message":    errors,
+		"status":  statusCode,
+		"success": false,
+		"data":    empty{},
+		"message": errors,
 	})
 }
