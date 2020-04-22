@@ -16,4 +16,4 @@
 .env
 
 #log file
-logs/*.log
+logs

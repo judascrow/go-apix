@@ -1,9 +1,9 @@
 package main
 
-import app "github.com/judascrow/go-api-crud/api"
+import "github.com/judascrow/go-api-starter/api"
 
 func main() {
 
-	app.Run()
+	api.Run()
 
 }
