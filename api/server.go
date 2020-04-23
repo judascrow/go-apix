@@ -28,9 +28,9 @@ func init() {
 }
 
 func migrate(db *gorm.DB) {
-
-	db.AutoMigrate(&models.User{}) // UserSubscription must be migrated first otherwise the join table create has not the shape we are expecting
-
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Role{})
+	db.AutoMigrate(&models.UserRole{})
 }
 
 func Run() {

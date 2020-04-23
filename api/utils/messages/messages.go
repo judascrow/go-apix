@@ -2,10 +2,14 @@ package messages
 
 const (
 	// Error
-	InvalidSyntax   = "invalid syntax"
-	IsAlreadyExists = "is already exists"
+	InvalidSyntax   = "Invalid Syntax"
+	IsAlreadyExists = "is Already Exists"
+	NotFound        = "Not Found"
 
 	// Success
-	HasBeenCreated = "has been created successfully"
-	DataFound      = "data found"
+	Logged    = "User logged in successfully"
+	Created   = "Created Successfully"
+	Updated   = "Updated Successfully"
+	Deleted   = "Deleted successfully"
+	DataFound = "Data Found"
 )

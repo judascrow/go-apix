@@ -1,0 +1,464 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Rest API document \u003cstyle\u003e.models {display: none !important}\u003c/style\u003e",
+        "title": "Example API",
+        "termsOfService": "COJ",
+        "contact": {},
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/users": {
+            "get": {
+                "description": "รายการผู้ใช้งาน",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ผู้ใช้งาน"
+                ],
+                "summary": "รายการผู้ใช้งาน",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagGetAllUsersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError400"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError500"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "เพิ่มผู้ใช้งาน",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ผู้ใช้งาน"
+                ],
+                "summary": "เพิ่มผู้ใช้งาน",
+                "parameters": [
+                    {
+                        "description": "เพิ่มผู้ใช้งาน",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagUserBodyIncludePassword"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagCreateUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError400"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError500"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{slug}": {
+            "get": {
+                "description": "ข้อมูลผู้ใช้งาน",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ผู้ใช้งาน"
+                ],
+                "summary": "ข้อมูลผู้ใช้งาน",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "slug ผู้ใช้งาน",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagGetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError400"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagError500"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.SwagCreateUserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "users": {
+                            "type": "object",
+                            "$ref": "#/definitions/models.SwagUser"
+                        }
+                    }
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "Created Successfully"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 201
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.SwagError400": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "ข้อมูล",
+                    "type": "object"
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "Bad Request"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 400
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "models.SwagError404": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "ข้อมูล",
+                    "type": "object"
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "Not Found"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 404
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "models.SwagError500": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "ข้อมูล",
+                    "type": "object"
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "Internal Server Error"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 500
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "models.SwagGetAllUsersResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "pageMeta": {
+                            "type": "object",
+                            "$ref": "#/definitions/models.SwagPageMeta"
+                        },
+                        "users": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.SwagUser"
+                            }
+                        }
+                    }
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "Data Found"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 200
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.SwagGetUserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "users": {
+                            "type": "object",
+                            "$ref": "#/definitions/models.SwagUser"
+                        }
+                    }
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "Data Found"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 200
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.SwagPageMeta": {
+            "type": "object",
+            "properties": {
+                "currentItemsCount": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "currentPageNumber": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "hasNextPage": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "hasPrevPage": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "nextPageNumber": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "nextPageUrl": {
+                    "type": "string",
+                    "example": "/api/v1/users/addresses?page=1\u0026pageSize=10"
+                },
+                "offset": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "prevPageNumber": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "prevPageUrl": {
+                    "type": "string",
+                    "example": "/api/v1/users/addresses?page=1\u0026pageSize=10"
+                },
+                "requestedPageSize": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "totalPagesCount": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "models.SwagUser": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "รูป Avatar",
+                    "type": "string",
+                    "example": "user01.png"
+                },
+                "email": {
+                    "description": "อีเมล์",
+                    "type": "string",
+                    "example": "user01@email.com"
+                },
+                "firstName": {
+                    "description": "ชื่อ",
+                    "type": "string",
+                    "example": "john"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "lastName": {
+                    "description": "นามสกุล",
+                    "type": "string",
+                    "example": "doe"
+                },
+                "slug": {
+                    "description": "Slug",
+                    "type": "string",
+                    "example": "user01"
+                },
+                "username": {
+                    "description": "Username",
+                    "type": "string",
+                    "example": "user01"
+                }
+            }
+        },
+        "models.SwagUserBodyIncludePassword": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "รูป Avatar",
+                    "type": "string",
+                    "example": "user01.png"
+                },
+                "email": {
+                    "description": "อีเมล์",
+                    "type": "string",
+                    "example": "user01@email.com"
+                },
+                "firstName": {
+                    "description": "ชื่อ",
+                    "type": "string",
+                    "example": "john"
+                },
+                "lastName": {
+                    "description": "นามสกุล",
+                    "type": "string",
+                    "example": "doe"
+                },
+                "password": {
+                    "description": "รหัสผ่าน",
+                    "type": "string",
+                    "example": "pass1234"
+                },
+                "slug": {
+                    "description": "Slug",
+                    "type": "string",
+                    "example": "user01"
+                },
+                "username": {
+                    "description": "Username",
+                    "type": "string",
+                    "example": "user01"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

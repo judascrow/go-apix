@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:8080/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODc2NjIyMDgsIm9yaWdfaWF0IjoxNTg3NjU4NjA4LCJzbHVnIjoidXNlcjAxIiwidXNlcm5hbWUiOiJ1c2VyMDEifQ.SQnNjSgA4e5LnMykoTzVyDTABMJB-D3V7gD-KEoGPi8
 
 ###
 
@@ -7,8 +8,19 @@ GET {{baseUrl}}/healthcheck
 
 ###
 
+# @name login
+POST  {{baseUrl}}/login
+
+{
+    "username": "user01",
+    "password": "12345678"
+}
+
+###
+
 # @name ListUsers
 GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
 
 ###
 

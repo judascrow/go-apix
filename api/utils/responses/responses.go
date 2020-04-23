@@ -3,6 +3,7 @@ package responses
 import (
 	"fmt"
 	"math"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	"github.com/judascrow/go-api-starter/api/services"
@@ -68,12 +69,24 @@ func JSONLIST(c *gin.Context, statusCode int, dataName string, data interface{},
 
 }
 
-func ERROR(c *gin.Context, statusCode int, errors interface{}) {
+func ERROR(c *gin.Context, statusCode int, messageError interface{}) {
+
+	if reflect.TypeOf(messageError).String() == "string" {
+		c.JSON(statusCode, gin.H{
+			"status":  statusCode,
+			"success": false,
+			"data":    empty{},
+			"message": messageError,
+		})
+		return
+	}
 
 	c.JSON(statusCode, gin.H{
 		"status":  statusCode,
 		"success": false,
 		"data":    empty{},
-		"message": errors,
+		"message": "Validation Failed",
+		"errors":  messageError,
 	})
+
 }

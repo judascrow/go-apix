@@ -1,0 +1,331 @@
+basePath: /api/v1
+definitions:
+  models.SwagCreateUserResponse:
+    properties:
+      data:
+        properties:
+          users:
+            $ref: '#/definitions/models.SwagUser'
+            type: object
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: Created Successfully
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 201
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: true
+        type: boolean
+    type: object
+  models.SwagError400:
+    properties:
+      data:
+        description: ข้อมูล
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: Bad Request
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 400
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: false
+        type: boolean
+    type: object
+  models.SwagError404:
+    properties:
+      data:
+        description: ข้อมูล
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: Not Found
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 404
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: false
+        type: boolean
+    type: object
+  models.SwagError500:
+    properties:
+      data:
+        description: ข้อมูล
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: Internal Server Error
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 500
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: false
+        type: boolean
+    type: object
+  models.SwagGetAllUsersResponse:
+    properties:
+      data:
+        properties:
+          pageMeta:
+            $ref: '#/definitions/models.SwagPageMeta'
+            type: object
+          users:
+            items:
+              $ref: '#/definitions/models.SwagUser'
+            type: array
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: Data Found
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 200
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: true
+        type: boolean
+    type: object
+  models.SwagGetUserResponse:
+    properties:
+      data:
+        properties:
+          users:
+            $ref: '#/definitions/models.SwagUser'
+            type: object
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: Data Found
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 200
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: true
+        type: boolean
+    type: object
+  models.SwagPageMeta:
+    properties:
+      currentItemsCount:
+        example: 1
+        type: integer
+      currentPageNumber:
+        example: 1
+        type: integer
+      hasNextPage:
+        example: false
+        type: boolean
+      hasPrevPage:
+        example: false
+        type: boolean
+      nextPageNumber:
+        example: 1
+        type: integer
+      nextPageUrl:
+        example: /api/v1/users/addresses?page=1&pageSize=10
+        type: string
+      offset:
+        example: 0
+        type: integer
+      prevPageNumber:
+        example: 1
+        type: integer
+      prevPageUrl:
+        example: /api/v1/users/addresses?page=1&pageSize=10
+        type: string
+      requestedPageSize:
+        example: 10
+        type: integer
+      totalPagesCount:
+        example: 1
+        type: integer
+    type: object
+  models.SwagUser:
+    properties:
+      avatar:
+        description: รูป Avatar
+        example: user01.png
+        type: string
+      email:
+        description: อีเมล์
+        example: user01@email.com
+        type: string
+      firstName:
+        description: ชื่อ
+        example: john
+        type: string
+      id:
+        description: ID
+        example: 1
+        type: integer
+      lastName:
+        description: นามสกุล
+        example: doe
+        type: string
+      slug:
+        description: Slug
+        example: user01
+        type: string
+      username:
+        description: Username
+        example: user01
+        type: string
+    type: object
+  models.SwagUserBodyIncludePassword:
+    properties:
+      avatar:
+        description: รูป Avatar
+        example: user01.png
+        type: string
+      email:
+        description: อีเมล์
+        example: user01@email.com
+        type: string
+      firstName:
+        description: ชื่อ
+        example: john
+        type: string
+      lastName:
+        description: นามสกุล
+        example: doe
+        type: string
+      password:
+        description: รหัสผ่าน
+        example: pass1234
+        type: string
+      slug:
+        description: Slug
+        example: user01
+        type: string
+      username:
+        description: Username
+        example: user01
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: 'Rest API document <style>.models {display: none !important}</style>'
+  license: {}
+  termsOfService: COJ
+  title: Example API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: รายการผู้ใช้งาน
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SwagGetAllUsersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.SwagError400'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.SwagError404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.SwagError500'
+      summary: รายการผู้ใช้งาน
+      tags:
+      - ผู้ใช้งาน
+    post:
+      consumes:
+      - application/json
+      description: เพิ่มผู้ใช้งาน
+      parameters:
+      - description: เพิ่มผู้ใช้งาน
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.SwagUserBodyIncludePassword'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.SwagCreateUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.SwagError400'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.SwagError404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.SwagError500'
+      security:
+      - ApiKeyAuth: []
+      summary: เพิ่มผู้ใช้งาน
+      tags:
+      - ผู้ใช้งาน
+  /users/{slug}:
+    get:
+      consumes:
+      - application/json
+      description: ข้อมูลผู้ใช้งาน
+      parameters:
+      - description: slug ผู้ใช้งาน
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SwagGetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.SwagError400'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.SwagError404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.SwagError500'
+      summary: ข้อมูลผู้ใช้งาน
+      tags:
+      - ผู้ใช้งาน
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

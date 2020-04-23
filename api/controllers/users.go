@@ -10,9 +10,20 @@ import (
 	"github.com/judascrow/go-api-starter/api/utils/responses"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"golang.org/x/crypto/bcrypt"
 )
 
+// @Summary รายการผู้ใช้งาน
+// @Description รายการผู้ใช้งาน
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.SwagGetAllUsersResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Router /users [get]
 func GetAllUsers(c *gin.Context) {
 	// Query Pages
 	pageSizeStr := c.Query("pageSize")
@@ -21,7 +32,7 @@ func GetAllUsers(c *gin.Context) {
 	// Find Users
 	users, pageMeta, err := services.FindAllUsers(pageSizeStr, pageStr)
 	if err != nil {
-		responses.ERROR(c, http.StatusNotFound, err.Error())
+		responses.ERROR(c, http.StatusNotFound, messages.NotFound)
 	}
 
 	// Serialize
@@ -35,6 +46,17 @@ func GetAllUsers(c *gin.Context) {
 	responses.JSONLIST(c, http.StatusOK, "users", UserSerialized, messages.DataFound, pageMeta)
 }
 
+// @Summary ข้อมูลผู้ใช้งาน
+// @Description ข้อมูลผู้ใช้งาน
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Param slug path string true "slug ผู้ใช้งาน"
+// @Success 200 {object} models.SwagGetUserResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Router /users/{slug} [get]
 func GetUserBySlug(c *gin.Context) {
 	// Get Slug from URI
 	slug := c.Param("slug")
@@ -42,7 +64,7 @@ func GetUserBySlug(c *gin.Context) {
 	// Find User
 	user, err := services.FindOneUserBySlug(slug)
 	if err != nil {
-		responses.ERROR(c, http.StatusNotFound, err.Error())
+		responses.ERROR(c, http.StatusNotFound, messages.NotFound)
 		return
 	}
 
@@ -50,15 +72,27 @@ func GetUserBySlug(c *gin.Context) {
 	responses.JSON(c, http.StatusOK, "user", user.Serialize(), messages.DataFound)
 }
 
+// @Summary เพิ่มผู้ใช้งาน
+// @Description เพิ่มผู้ใช้งาน
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Param user body models.SwagUserBodyIncludePassword true "เพิ่มผู้ใช้งาน"
+// @Success 201 {object} models.SwagCreateUserResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Security ApiKeyAuth
+// @Router /users [post]
 func CreateUser(c *gin.Context) {
 
 	// Define struct user variable
 	var user models.User
 
 	// Map jsonBody to struct
-	err := c.BindJSON(&user)
+	err := c.ShouldBindWith(&user, binding.JSON)
 	if err != nil {
-		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		responses.ERROR(c, http.StatusBadRequest, messages.ErrorsResponse(err))
 		return
 	}
 
@@ -90,5 +124,5 @@ func CreateUser(c *gin.Context) {
 	}
 
 	// Response
-	responses.JSON(c, http.StatusCreated, "user", user.Serialize(), "user "+messages.HasBeenCreated)
+	responses.JSON(c, http.StatusCreated, "user", user.Serialize(), "user "+messages.Created)
 }

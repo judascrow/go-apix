@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/judascrow/go-api-starter/api/controllers"
 	"github.com/judascrow/gomiddlewares"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
@@ -18,7 +20,7 @@ func InitRouter() *gin.Engine {
 	// Prometheus
 	p := ginprometheus.NewPrometheus("gin")
 	p.Use(r)
-	p.ReqCntURLLabelMappingFn = mappingFn
+	p.ReqCntURLLabelMappingFn = MappingFn
 
 	r.HandleMethodNotAllowed = true
 	r.NoMethod(func(c *gin.Context) {
@@ -37,9 +39,16 @@ func InitRouter() *gin.Engine {
 	// Routes
 	apiv1 := r.Group(os.Getenv("APP_API_BASE_URL"))
 
-	apiv1.GET("/healthcheck", healthcheck)
+	// swagger
+	apiv1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	apiv1.GET("/healthcheck", Healthcheck)
+
+	authMiddleware := AuthMiddlewareJWT()
+	apiv1.POST("/login", authMiddleware.LoginHandler)
 
 	users := apiv1.Group("/users")
+	users.Use(authMiddleware.MiddlewareFunc())
 	{
 		users.GET("", controllers.GetAllUsers)
 		users.GET("/:slug", controllers.GetUserBySlug)
@@ -49,7 +58,7 @@ func InitRouter() *gin.Engine {
 	return r
 }
 
-func healthcheck(c *gin.Context) {
+func Healthcheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "API is Online",
@@ -57,7 +66,7 @@ func healthcheck(c *gin.Context) {
 
 }
 
-func mappingFn(c *gin.Context) string {
+func MappingFn(c *gin.Context) string {
 	url := c.Request.URL.Path
 	for _, p := range c.Params {
 		if p.Key == "id" {
