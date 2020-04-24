@@ -14,6 +14,16 @@ git init
 cp .env.example .env
 ```
 
+## Features
+
+- RESTful API
+- Gin
+- Gorm
+- Gin-Swagger
+- Log-Zap
+- Gin-Jwt
+- Casbin
+
 ## COMMAND
 
 Migrate & Seed :
