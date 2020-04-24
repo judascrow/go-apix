@@ -1,4 +1,4 @@
-# Golang API Example
+# Golang API Starter
 
 ##### Golang v.1.14
 
