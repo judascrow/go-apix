@@ -97,9 +97,17 @@ func seedUsers(db *gorm.DB) {
 	}
 }
 
+func seedCasbinRule(db *gorm.DB) {
+	var casbinRule [1]models.CasbinRule
+
+	db.Where(&models.CasbinRule{PType: "p", V0: "1", V1: "/api/v1/users*"}).Attrs(models.CasbinRule{V2: "(GET)|(POST)|(PUT)|(DELETE)"}).FirstOrCreate(&casbinRule[0])
+
+}
+
 func Seed() {
 	db := infrastructure.GetDB()
 	rand.Seed(time.Now().UnixNano())
 	seedAdmin(db)
 	seedUsers(db)
+	seedCasbinRule(db)
 }

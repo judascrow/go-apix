@@ -31,9 +31,10 @@ func init() {
 
 func drop(db *gorm.DB) {
 	db.DropTableIfExists(
-		&models.User{},
-		&models.Role{},
+		&models.CasbinRule{},
 		&models.UserRole{},
+		&models.Role{},
+		&models.User{},
 	)
 }
 
@@ -41,6 +42,7 @@ func migrate(db *gorm.DB) {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Role{})
 	db.AutoMigrate(&models.UserRole{})
+	db.AutoMigrate(&models.CasbinRule{})
 }
 
 func addDbConstraints(db *gorm.DB) {
