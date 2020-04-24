@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,6 +19,7 @@ import (
 	"github.com/judascrow/go-api-starter/api/infrastructure"
 	"github.com/judascrow/go-api-starter/api/models"
 	"github.com/judascrow/go-api-starter/api/routes"
+	"github.com/judascrow/go-api-starter/api/seeds"
 )
 
 func init() {
@@ -27,10 +29,35 @@ func init() {
 	}
 }
 
+func drop(db *gorm.DB) {
+	db.DropTableIfExists(
+		&models.User{},
+		&models.Role{},
+		&models.UserRole{},
+	)
+}
+
 func migrate(db *gorm.DB) {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Role{})
 	db.AutoMigrate(&models.UserRole{})
+}
+
+func addDbConstraints(db *gorm.DB) {
+
+	dialect := db.Dialect().GetName() // mysql
+	if dialect != "sqlite3" {
+		db.Model(&models.UserRole{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
+		db.Model(&models.UserRole{}).AddForeignKey("role_id", "roles(id)", "CASCADE", "CASCADE")
+	}
+
+	db.Model(&models.UserRole{}).AddIndex("user_roles__idx_user_id", "user_id")
+}
+
+func create(db *gorm.DB) {
+	drop(db)
+	migrate(db)
+	addDbConstraints(db)
 }
 
 func Run() {
@@ -44,6 +71,36 @@ func Run() {
 
 	database := infrastructure.InitDb()
 	defer database.Close()
+
+	args := os.Args
+	fmt.Println(args)
+	if len(args) > 1 && args[1] != "main.go" {
+		first := args[1]
+		second := ""
+		if len(args) > 2 {
+			second = args[2]
+		}
+
+		if first == "create" {
+			create(database)
+		} else if first == "seed" {
+			seeds.Seed()
+			os.Exit(0)
+		} else if first == "migrate" {
+			migrate(database)
+		}
+
+		if second == "seed" {
+			seeds.Seed()
+			os.Exit(0)
+		} else if first == "migrate" {
+			migrate(database)
+		}
+
+		if first != "" && second == "" {
+			os.Exit(0)
+		}
+	}
 
 	migrate(database)
 
