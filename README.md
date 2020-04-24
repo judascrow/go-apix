@@ -103,23 +103,11 @@ Update
 │       │
 │       └───responses
 │               responses.go
-│
-├───docs
-│       docs.go
-│       swagger.json
-│       swagger.yaml
-│
-├───rest-client
-│       local.http
-│
-└───tests
-│       setup_test.go
-│
+
 │   .env
 │   .env.example
 │   .gitignore
 │   auth.conf
-│   gin-bin.exe
 │   git.sh
 │   go.mod
 │   go.sum
