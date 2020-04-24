@@ -27,7 +27,7 @@ Base Path: /api/v1
 
 | Done               | Method | URI          | authorize | comment              |
 | ------------------ | ------ | ------------ | --------- | -------------------- |
-| :white_check_mark: | GET    | /healthcheck | No        | ครวจสอบสถานะ Service |
+| :white_check_mark: | GET    | /healthcheck | No        | Check Status Service |
 
 ### Auth
 
@@ -37,10 +37,11 @@ Base Path: /api/v1
 
 ### Users
 
-| Done               | Method | URI    | authorize | comment     |
-| ------------------ | ------ | ------ | --------- | ----------- |
-| :white_check_mark: | GET    | /users | Yes       | List Users  |
-| :white_check_mark: | POST   | /users | Yes       | Create User |
+| Done               | Method | URI          | authorize | comment          |
+| ------------------ | ------ | ------------ | --------- | ---------------- |
+| :white_check_mark: | GET    | /users       | Yes       | List Users       |
+| :white_check_mark: | GET    | /users/:slug | Yes       | Get User by Slug |
+| :white_check_mark: | POST   | /users       | Yes       | Create User      |
 
 ### Swaggo
 
