@@ -2,6 +2,18 @@
 
 ##### Golang v.1.14
 
+Install:
+
+```
+git clone https://github.com/judascrow/go-api-starter.git
+rm .git
+rm go.mod
+rm go.sum
+go mod init <New Mudule>
+git init
+cp .env.example .env
+```
+
 ## COMMAND
 
 Migrate & Seed :
