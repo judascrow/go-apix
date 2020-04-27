@@ -13,10 +13,16 @@ type User struct {
 	LastName  string `json:"lastName" form:"lastName" gorm:"type:varchar(100);not null" binding:"required"`
 	Email     string `json:"email" form:"email" gorm:"type:varchar(100);unique_index"`
 	Slug      string `json:"slug" form:"slug" uri:"slug"  gorm:"type:varchar(50);unique_index"`
+	Status    string `json:"status" form:"status" sql:"type:enum('A','I','C');DEFAULT:'A'"`
 	Avatar    string `json:"avatar" form:"avatar" `
 
 	Roles     []Role     `json:"roles" gorm:"many2many:users_roles;"`
 	UserRoles []UserRole `json:"users_roles" gorm:"foreignkey:UserId"`
+}
+
+type ChangePassword struct {
+	CurrentPassword string `json:"current_password" form:"current_password" binding:"required"`
+	NewPassword     string `json:"new_password" form:"new_password" binding:"required"`
 }
 
 func (u *User) BeforeSave(db *gorm.DB) (err error) {
@@ -43,8 +49,22 @@ func (u User) Serialize() map[string]interface{} {
 		"lastName":  u.LastName,
 		"email":     u.Email,
 		"slug":      u.Slug,
+		"status":    u.Status,
 		"avatar":    u.Avatar,
 		"roles":     r,
+	}
+}
+
+func (user *User) GetUserStatusAsString() string {
+	switch user.Status {
+	case "A":
+		return "Active"
+	case "I":
+		return "Inctive"
+	case "C":
+		return "Cancel"
+	default:
+		return "Unknown"
 	}
 }
 

@@ -96,7 +96,7 @@ func AuthMiddlewareJWT() *jwt.GinJWTMiddleware {
 			password := loginVals.Password
 
 			var user User
-			if err := db.Preload("UserRoles").Where("username = ? ", username).First(&user).Error; err != nil {
+			if err := db.Preload("UserRoles").Where("username = ? AND status = 'A' ", username).First(&user).Error; err != nil {
 				return nil, jwt.ErrFailedAuthentication
 			}
 

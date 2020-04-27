@@ -53,6 +53,9 @@ func InitRouter() *gin.Engine {
 		users.GET("", controllers.GetAllUsers)
 		users.GET("/:slug", controllers.GetUserBySlug)
 		users.POST("", controllers.CreateUser)
+		users.PUT("/:slug", controllers.UpdateUser)
+		users.DELETE("/:slug", controllers.DeleteUser)
+		users.POST("/changepassword", controllers.ChangePassword)
 	}
 
 	return r

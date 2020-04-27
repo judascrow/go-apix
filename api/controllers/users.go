@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
+	"github.com/judascrow/go-api-starter/api/middlewares/jwt"
 	"github.com/judascrow/go-api-starter/api/models"
 
 	"github.com/judascrow/go-api-starter/api/services"
@@ -10,7 +12,6 @@ import (
 	"github.com/judascrow/go-api-starter/api/utils/responses"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -90,7 +91,7 @@ func CreateUser(c *gin.Context) {
 	var user models.User
 
 	// Map jsonBody to struct
-	err := c.ShouldBindWith(&user, binding.JSON)
+	err := c.BindJSON(&user)
 	if err != nil {
 		responses.ERROR(c, http.StatusBadRequest, messages.ErrorsResponse(err))
 		return
@@ -124,5 +125,109 @@ func CreateUser(c *gin.Context) {
 	}
 
 	// Response
-	responses.JSON(c, http.StatusCreated, "user", user.Serialize(), "user "+messages.Created)
+	responses.JSON(c, http.StatusCreated, "user", user.Serialize(), "User "+messages.Created)
+}
+
+func UpdateUser(c *gin.Context) {
+
+	slug := c.Param("slug")
+
+	var userData *models.User
+	err := c.BindJSON(&userData)
+	if err != nil {
+		responses.ERROR(c, http.StatusBadRequest, messages.ErrorsResponse(err))
+		return
+	}
+
+	var user models.User
+	userData.Username = ""
+	userData.Password = ""
+
+	if user, err = services.UpdateUser(slug, userData); err != nil {
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	responses.JSON(c, http.StatusOK, "user", user.Serialize(), "User "+messages.Updated)
+
+}
+
+func DeleteUser(c *gin.Context) {
+	slug := c.Param("slug")
+	err := services.DeleteUser(&models.User{Slug: slug})
+	if err != nil {
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	responses.JSONNODATA(c, http.StatusOK, "User "+messages.Deleted)
+}
+
+func ChangePassword(c *gin.Context) {
+
+	claims := jwt.ExtractClaims(c)
+	slug := claims["slug"].(string)
+
+	var requestBody models.ChangePassword
+	err := c.BindJSON(&requestBody)
+	if err != nil {
+		responses.ERROR(c, http.StatusBadRequest, messages.ErrorsResponse(err))
+		return
+	}
+
+	user, err := services.FindOneUserBySlug(slug)
+	if err != nil {
+		responses.ERROR(c, http.StatusNotFound, messages.NotFound)
+		return
+	}
+
+	password := user.Password
+	if requestBody.CurrentPassword == "" && requestBody.NewPassword != "" {
+		err = errors.New("Please Provide current_password")
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	if requestBody.CurrentPassword != "" && requestBody.NewPassword == "" {
+		err = errors.New("Please Provide new_password")
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	if requestBody.CurrentPassword != "" && requestBody.NewPassword != "" {
+		//Also check if the new password
+		if len(requestBody.NewPassword) < 6 {
+			err = errors.New("Password should be atleast 6 characters")
+			responses.ERROR(c, http.StatusBadRequest, err.Error())
+			return
+		}
+		//if they do, check that the former password is correct
+		err = verifyPassword(user.Password, requestBody.CurrentPassword)
+		if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+			err = errors.New("The password not correct")
+			responses.ERROR(c, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		// Generate password
+		bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(requestBody.NewPassword), bcrypt.DefaultCost)
+		if err != nil {
+			responses.ERROR(c, http.StatusBadRequest, err.Error())
+			return
+		}
+		password = string(bcryptPassword)
+	}
+
+	userData := models.User{
+		Password: password,
+	}
+
+	if user, err = services.UpdateUser(slug, userData); err != nil {
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	responses.JSON(c, http.StatusOK, "user", user.Serialize(), "User "+messages.Updated)
+
+}
+
+func verifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }

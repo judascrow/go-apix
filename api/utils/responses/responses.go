@@ -69,6 +69,16 @@ func JSONLIST(c *gin.Context, statusCode int, dataName string, data interface{},
 
 }
 
+func JSONNODATA(c *gin.Context, statusCode int, message interface{}) {
+	c.JSON(statusCode, gin.H{
+		"status":  statusCode,
+		"success": true,
+		"data":    empty{},
+		"message": message,
+	})
+
+}
+
 func ERROR(c *gin.Context, statusCode int, messageError interface{}) {
 
 	if reflect.TypeOf(messageError).String() == "string" {
