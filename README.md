@@ -59,11 +59,14 @@ Base Path: /api/v1
 
 ### Users
 
-| Done               | Method | URI          | authorize | comment          |
-| ------------------ | ------ | ------------ | --------- | ---------------- |
-| :white_check_mark: | GET    | /users       | Yes       | List Users       |
-| :white_check_mark: | GET    | /users/:slug | Yes       | Get User by Slug |
-| :white_check_mark: | POST   | /users       | Yes       | Create User      |
+| Done               | Method | URI                   | authorize | comment          |
+| ------------------ | ------ | --------------------- | --------- | ---------------- |
+| :white_check_mark: | GET    | /users                | Yes       | List Users       |
+| :white_check_mark: | GET    | /users/:slug          | Yes       | Get User by Slug |
+| :white_check_mark: | POST   | /users                | Yes       | Create User      |
+| :white_check_mark: | PUT    | /users/:slug          | Yes       | Update User      |
+| :white_check_mark: | PUT    | /users/:slug/password | Yes       | Change Password  |
+| :white_check_mark: | DELETE | /users/:slug          | Yes       | Delete User      |
 
 ### Swaggo
 

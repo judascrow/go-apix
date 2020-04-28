@@ -21,8 +21,8 @@ type User struct {
 }
 
 type ChangePassword struct {
-	CurrentPassword string `json:"current_password" form:"current_password" binding:"required"`
-	NewPassword     string `json:"new_password" form:"new_password" binding:"required"`
+	CurrentPassword string `json:"current_password" form:"current_password" binding:"required" example:"password"` // รหัสผ่านปัจจุบัน
+	NewPassword     string `json:"new_password" form:"new_password" binding:"required" example:"password123"`      // รหัสผ่านใหม่
 }
 
 func (u *User) BeforeSave(db *gorm.DB) (err error) {
@@ -99,12 +99,7 @@ type SwagUserBody struct {
 }
 
 type SwagUserBodyIncludePassword struct {
-	Username  string `json:"username" example:"user01"`        // Username
-	FirstName string `json:"firstName" example:"john"`         // ชื่อ
-	LastName  string `json:"lastName" example:"doe"`           // นามสกุล
-	Email     string `json:"email" example:"user01@email.com"` // อีเมล์
-	Slug      string `json:"slug" example:"user01"`            // Slug
-	Avatar    string `json:"avatar" example:"user01.png"`      // รูป Avatar
+	SwagUserBody
 	SwagUserPassword
 }
 
@@ -128,4 +123,18 @@ type SwagCreateUserResponse struct {
 	Data struct {
 		Users SwagUser `json:"users"`
 	} `json:"data"`
+}
+
+type SwagUpdateUserResponse struct {
+	SwagUpdateBase
+	Data struct {
+		Users SwagUser `json:"users"`
+	} `json:"data"`
+}
+
+type SwagChangePasswordResponse struct {
+	Success bool        `json:"success" example:"true"`                         // ผลการเรียกใช้งาน
+	Status  int         `json:"status" example:"200"`                           // HTTP Status Code
+	Message string      `json:"message" example:"Change Password Successfully"` // ข้อความตอบกลับ
+	Data    interface{} `json:"data" `                                          // ข้อมูล
 }

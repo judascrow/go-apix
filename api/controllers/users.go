@@ -128,6 +128,19 @@ func CreateUser(c *gin.Context) {
 	responses.JSON(c, http.StatusCreated, "user", user.Serialize(), "User "+messages.Created)
 }
 
+// @Summary แก้ไขผู้ใช้งาน
+// @Description แก้ไขผู้ใช้งาน
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Param slug path string true "slug ผู้ใช้งาน"
+// @Param user body models.SwagUserBody true "แก้ไขผู้ใช้งาน"
+// @Success 201 {object} models.SwagUpdateUserResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Security ApiKeyAuth
+// @Router /users/{slug} [put]
 func UpdateUser(c *gin.Context) {
 
 	slug := c.Param("slug")
@@ -152,6 +165,18 @@ func UpdateUser(c *gin.Context) {
 
 }
 
+// @Summary ลบผู้ใช้งาน
+// @Description ลบผู้ใช้งาน
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Param slug path string true "slug ผู้ใช้งาน"
+// @Success 201 {object} models.SwagDeleteBase
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Security ApiKeyAuth
+// @Router /users/{slug} [delete]
 func DeleteUser(c *gin.Context) {
 	slug := c.Param("slug")
 	err := services.DeleteUser(&models.User{Slug: slug})
@@ -162,6 +187,19 @@ func DeleteUser(c *gin.Context) {
 	responses.JSONNODATA(c, http.StatusOK, "User "+messages.Deleted)
 }
 
+// @Summary เปลี่ยนรหัสผ่าน
+// @Description เปลี่ยนรหัสผ่าน
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Param slug path string true "slug ผู้ใช้งาน"
+// @Param user body models.ChangePassword true "เปลี่ยนรหัสผ่าน"
+// @Success 201 {object} models.SwagChangePasswordResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Security ApiKeyAuth
+// @Router /users/{slug}/password [put]
 func ChangePassword(c *gin.Context) {
 
 	slug := c.Param("slug")
@@ -227,8 +265,7 @@ func ChangePassword(c *gin.Context) {
 		responses.ERROR(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	responses.JSON(c, http.StatusOK, "user", user.Serialize(), "User "+messages.Updated)
+	responses.JSONNODATA(c, http.StatusOK, messages.ChangePasswordSuccess)
 
 }
 

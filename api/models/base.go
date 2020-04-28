@@ -12,6 +12,19 @@ type SwagCreateBase struct {
 	Message string `json:"message" example:"Created Successfully"` // ข้อความตอบกลับ
 }
 
+type SwagUpdateBase struct {
+	Success bool   `json:"success" example:"true"`                 // ผลการเรียกใช้งาน
+	Status  int    `json:"status" example:"200"`                   // HTTP Status Code
+	Message string `json:"message" example:"Updated Successfully"` // ข้อความตอบกลับ
+}
+
+type SwagDeleteBase struct {
+	Success bool        `json:"success" example:"true"`                 // ผลการเรียกใช้งาน
+	Status  int         `json:"status" example:"200"`                   // HTTP Status Code
+	Message string      `json:"message" example:"Deleted Successfully"` // ข้อความตอบกลับ
+	Data    interface{} `json:"data" `                                  // ข้อมูล
+}
+
 type SwagPageMeta struct {
 	CurrentItemsCount int    `json:"currentItemsCount" example:"1"`
 	CurrentPageNumber int    `json:"currentPageNumber" example:"1"`
