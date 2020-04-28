@@ -55,7 +55,7 @@ func InitRouter() *gin.Engine {
 		users.POST("", controllers.CreateUser)
 		users.PUT("/:slug", controllers.UpdateUser)
 		users.DELETE("/:slug", controllers.DeleteUser)
-		users.POST("/changepassword", controllers.ChangePassword)
+		users.PUT("/:slug/password", controllers.ChangePassword)
 	}
 
 	return r

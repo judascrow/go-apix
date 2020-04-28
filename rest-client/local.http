@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:8080/api/v1
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODc5OTQ3NTQsIm9yaWdfaWF0IjoxNTg3OTkxMTU0LCJyb2xlcyI6WzJdLCJzbHVnIjoicnNjb3R0IiwidXNlcm5hbWUiOiJyU2NvdHQifQ.SnomP_6iXQQVEIzi-wAus_uLHwBmHGhrcjHD0FPgjo8
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODgwNDU0MzUsIm9yaWdfaWF0IjoxNTg4MDQxODM1LCJyb2xlcyI6WzJdLCJzbHVnIjoicnNjb3R0IiwidXNlcm5hbWUiOiJyU2NvdHQifQ.tx69WT15AiCaKmEy4-zu5q9bMqFebG7z-eeKUQZxUEY
 
 ###
 
@@ -12,7 +12,7 @@ GET {{baseUrl}}/healthcheck
 POST  {{baseUrl}}/login
 
 {
-    "username": "rscott",
+    "username": "rScott",
     "password": "12345678"
 }
 
@@ -55,12 +55,12 @@ Authorization: Bearer {{token}}
 ###
 
 # @name ChangePassword
-POST {{baseUrl}}/users/changepassword
+PUT {{baseUrl}}/users/rscott/password
 Authorization: Bearer {{token}}
 
 {
-	"current_password": "password",
-	"new_password": "12345678"
+	"current_password": "12345678",
+	"new_password": "password"
 }
 
 ###

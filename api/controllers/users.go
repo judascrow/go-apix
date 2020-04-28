@@ -164,8 +164,7 @@ func DeleteUser(c *gin.Context) {
 
 func ChangePassword(c *gin.Context) {
 
-	claims := jwt.ExtractClaims(c)
-	slug := claims["slug"].(string)
+	slug := c.Param("slug")
 
 	var requestBody models.ChangePassword
 	err := c.BindJSON(&requestBody)
@@ -177,6 +176,11 @@ func ChangePassword(c *gin.Context) {
 	user, err := services.FindOneUserBySlug(slug)
 	if err != nil {
 		responses.ERROR(c, http.StatusNotFound, messages.NotFound)
+		return
+	}
+
+	if !ClaimsOwner(c, slug) {
+		responses.ERROR(c, http.StatusForbidden, messages.NotPermission)
 		return
 	}
 
@@ -230,4 +234,33 @@ func ChangePassword(c *gin.Context) {
 
 func verifyPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+
+func ClaimsOwner(c *gin.Context, slug string) bool {
+
+	claims := jwt.ExtractClaims(c)
+
+	var roles = claims["roles"].([]interface{})
+	for i := 0; i < len(roles); i++ {
+		if uint(roles[i].(float64)) == 1 {
+			return true
+		}
+	}
+
+	if slug == claims["slug"].(string) || ClaimsIsAdmin(claims) {
+		return true
+	}
+	return false
+}
+
+func ClaimsIsAdmin(claims jwt.MapClaims) bool {
+
+	var roles = claims["roles"].([]interface{})
+	for i := 0; i < len(roles); i++ {
+		if uint(roles[i].(float64)) == 1 {
+			return true
+		}
+	}
+
+	return false
 }

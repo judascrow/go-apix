@@ -37,9 +37,9 @@ func (u *User) BeforeSave(db *gorm.DB) (err error) {
 
 func (u User) Serialize() map[string]interface{} {
 
-	r := []map[string]interface{}{}
+	roles := []map[string]interface{}{}
 	for _, role := range u.Roles {
-		r = append(r, role.Serialize())
+		roles = append(roles, role.Serialize())
 	}
 
 	return map[string]interface{}{
@@ -51,7 +51,7 @@ func (u User) Serialize() map[string]interface{} {
 		"slug":      u.Slug,
 		"status":    u.Status,
 		"avatar":    u.Avatar,
-		"roles":     r,
+		"roles":     roles,
 	}
 }
 
@@ -66,6 +66,18 @@ func (user *User) GetUserStatusAsString() string {
 	default:
 		return "Unknown"
 	}
+}
+
+func (user *User) IsAdmin() bool {
+	for _, role := range user.Roles {
+		if role.Name == "ROLE_ADMIN" {
+			return true
+		}
+	}
+	return false
+}
+func (user *User) IsNotAdmin() bool {
+	return !user.IsAdmin()
 }
 
 type SwagUser struct {
