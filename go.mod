@@ -15,7 +15,7 @@ require (
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
 	github.com/jinzhu/gorm v1.9.12
 	github.com/joho/godotenv v1.3.0
-	github.com/judascrow/gomiddlewares v0.0.0-20200422060555-4c0f913e633b
+	github.com/judascrow/gomiddlewares v0.0.0-20200501024609-fff438ecf4ed
 	github.com/prometheus/client_golang v1.5.1 // indirect
 	github.com/sirupsen/logrus v1.5.0 // indirect
 	github.com/stretchr/testify v1.5.1

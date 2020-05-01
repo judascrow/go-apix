@@ -116,6 +116,8 @@ github.com/judascrow/gin-jwt v1.0.1 h1:bBVDuTWpTdIUz02JH/Ohg9KljeCNX7ftx7vG6Q3VF
 github.com/judascrow/gin-jwt v1.0.1/go.mod h1:2xXQjsQXfW+rV3fi+qsfooKlZpMIfwBiCrk3ueI+CSw=
 github.com/judascrow/gomiddlewares v0.0.0-20200422060555-4c0f913e633b h1:Zd65qUZIbFYpUuBFyeRQs0bB7uQ9a9s+sqrEBFsQBr8=
 github.com/judascrow/gomiddlewares v0.0.0-20200422060555-4c0f913e633b/go.mod h1:E3tftE7Xoje6+RzjZXrxXkgZ6zTQqG/F2SG3XobudD4=
+github.com/judascrow/gomiddlewares v0.0.0-20200501024609-fff438ecf4ed h1:xRjY+pfZfYb7x400ZN5opKZypTlK/4orox32wEslRow=
+github.com/judascrow/gomiddlewares v0.0.0-20200501024609-fff438ecf4ed/go.mod h1:ixn+OXqpzkJhiaiYrNAw6L/rymZHllIPGm3cFek6EPo=
 github.com/judascrow/logger v0.0.0-20200420081334-5002411b9d10/go.mod h1:i++k4pE7zYx8RVcMiiX0eMW/FAkn7swRJ8HySc/CO5U=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=

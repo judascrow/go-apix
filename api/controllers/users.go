@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/judascrow/go-api-starter/api/middlewares/jwt"
 	"github.com/judascrow/go-api-starter/api/models"
+	"github.com/judascrow/gomiddlewares/jwt"
 
 	"github.com/judascrow/go-api-starter/api/services"
 	"github.com/judascrow/go-api-starter/api/utils/messages"
