@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/judascrow/go-api-starter/api/infrastructure"
-	"github.com/judascrow/go-api-starter/api/models"
-	"github.com/judascrow/go-api-starter/api/utils/messages"
+	"github.com/judascrow/go-apix/api/infrastructure"
+	"github.com/judascrow/go-apix/api/models"
+	"github.com/judascrow/go-apix/api/utils/messages"
 	"github.com/judascrow/gomiddlewares/jwt"
 
 	"golang.org/x/crypto/bcrypt"

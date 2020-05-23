@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/judascrow/go-api-starter/api/routes"
+	"github.com/judascrow/go-apix/api/routes"
 	"github.com/stretchr/testify/assert"
 )
 

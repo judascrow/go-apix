@@ -16,10 +16,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
-	"github.com/judascrow/go-api-starter/api/infrastructure"
-	"github.com/judascrow/go-api-starter/api/models"
-	"github.com/judascrow/go-api-starter/api/routes"
-	"github.com/judascrow/go-api-starter/api/seeds"
+	"github.com/judascrow/go-apix/api/infrastructure"
+	"github.com/judascrow/go-apix/api/models"
+	"github.com/judascrow/go-apix/api/routes"
+	"github.com/judascrow/go-apix/api/seeds"
 )
 
 func init() {

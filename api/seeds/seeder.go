@@ -6,8 +6,8 @@ import (
 
 	"github.com/icrowley/fake"
 	"github.com/jinzhu/gorm"
-	"github.com/judascrow/go-api-starter/api/infrastructure"
-	"github.com/judascrow/go-api-starter/api/models"
+	"github.com/judascrow/go-apix/api/infrastructure"
+	"github.com/judascrow/go-apix/api/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -98,9 +98,10 @@ func seedUsers(db *gorm.DB) {
 }
 
 func seedCasbinRule(db *gorm.DB) {
-	var casbinRule [1]models.CasbinRule
+	var casbinRule [2]models.CasbinRule
 
 	db.Where(&models.CasbinRule{PType: "p", V0: "1", V1: "/api/v1/users*"}).Attrs(models.CasbinRule{V2: "(GET)|(POST)|(PUT)|(DELETE)"}).FirstOrCreate(&casbinRule[0])
+	db.Where(&models.CasbinRule{PType: "p", V0: "2", V1: "/api/v1/users/*"}).Attrs(models.CasbinRule{V2: "(PUT)"}).FirstOrCreate(&casbinRule[1])
 
 }
 

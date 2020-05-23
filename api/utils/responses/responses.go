@@ -6,7 +6,7 @@ import (
 	"reflect"
 
 	"github.com/gin-gonic/gin"
-	"github.com/judascrow/go-api-starter/api/services"
+	"github.com/judascrow/go-apix/api/services"
 )
 
 type empty map[string]interface{}

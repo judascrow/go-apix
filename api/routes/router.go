@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/judascrow/go-api-starter/api/controllers"
+	"github.com/judascrow/go-apix/api/controllers"
 	"github.com/judascrow/gomiddlewares"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/judascrow/go-api-starter/api/infrastructure"
-	"github.com/judascrow/go-api-starter/api/models"
+	"github.com/judascrow/go-apix/api/infrastructure"
+	"github.com/judascrow/go-apix/api/models"
 )
 
 func FindAllUsers(pageSizeStr, pageStr string) ([]models.User, PageMeta, error) {

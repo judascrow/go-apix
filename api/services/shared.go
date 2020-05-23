@@ -4,7 +4,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/judascrow/go-api-starter/api/infrastructure"
+	"github.com/judascrow/go-apix/api/infrastructure"
 )
 
 func CreateOne(data interface{}) error {

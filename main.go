@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/judascrow/go-api-starter/api"
-	_ "github.com/judascrow/go-api-starter/docs"
+	"github.com/judascrow/go-apix/api"
+	_ "github.com/judascrow/go-apix/docs"
 )
 
 // @title Example API

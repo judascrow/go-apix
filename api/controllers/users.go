@@ -4,12 +4,12 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/judascrow/go-api-starter/api/models"
+	"github.com/judascrow/go-apix/api/models"
 	"github.com/judascrow/gomiddlewares/jwt"
 
-	"github.com/judascrow/go-api-starter/api/services"
-	"github.com/judascrow/go-api-starter/api/utils/messages"
-	"github.com/judascrow/go-api-starter/api/utils/responses"
+	"github.com/judascrow/go-apix/api/services"
+	"github.com/judascrow/go-apix/api/utils/messages"
+	"github.com/judascrow/go-apix/api/utils/responses"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"

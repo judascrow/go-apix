@@ -5,7 +5,7 @@
 Install:
 
 ```
-git clone https://github.com/judascrow/go-api-starter.git
+git clone https://github.com/judascrow/go-apix.git
 rm .git
 rm go.mod
 rm go.sum
