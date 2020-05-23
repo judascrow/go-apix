@@ -3,6 +3,8 @@ package controllers
 import (
 	"errors"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/judascrow/go-apix/api/models"
 
@@ -60,6 +62,11 @@ func GetAllUsers(c *gin.Context) {
 func GetUserBySlug(c *gin.Context) {
 	// Get Slug from URI
 	slug := c.Param("slug")
+
+	if !ClaimsOwner(c, slug) {
+		responses.ERROR(c, http.StatusForbidden, messages.NotPermission)
+		return
+	}
 
 	// Find User
 	user, err := services.FindOneUserBySlug(slug)
@@ -270,5 +277,70 @@ func ChangePassword(c *gin.Context) {
 		return
 	}
 	responses.JSONNODATA(c, http.StatusOK, messages.ChangePasswordSuccess)
+
+}
+
+// @Summary อัพโหลดรูป avatar
+// @Description อัพโหลดรูป avatar
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Param slug path string true "slug ผู้ใช้งาน"
+// @Param user body models.UploadAvatar true "อัพโหลดรูป avatar"
+// @Success 201 {object} models.SwagUploadAvatarResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Security ApiKeyAuth
+// @Router /users/{slug}/avatar [put]
+func UploadAvatar(c *gin.Context) {
+
+	slug := c.Param("slug")
+
+	if !ClaimsOwner(c, slug) {
+		responses.ERROR(c, http.StatusForbidden, messages.NotPermission)
+		return
+	}
+
+	user, err := services.FindOneUserBySlug(slug)
+	if err != nil {
+		responses.ERROR(c, http.StatusNotFound, messages.NotFound)
+		return
+	}
+
+	avatar, err := c.FormFile("avatar")
+	if err != nil {
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if avatar != nil {
+		imgNameAvatar := randomString(16) + ".png"
+		dirPath := filepath.Join(".", "media", "avatar")
+		filePathAvatar := filepath.Join(dirPath, imgNameAvatar)
+		if _, err = os.Stat(dirPath); os.IsNotExist(err) {
+			err = os.MkdirAll(dirPath, os.ModeDir)
+			if err != nil {
+				responses.ERROR(c, http.StatusInternalServerError, err.Error())
+				return
+			}
+		}
+		if err := c.SaveUploadedFile(avatar, filePathAvatar); err != nil {
+			responses.ERROR(c, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		user.Avatar = string(filepath.Separator) + filePathAvatar
+	}
+
+	userData := models.User{
+		Avatar: user.Avatar,
+	}
+
+	if user, err = services.UpdateUser(slug, userData); err != nil {
+		responses.ERROR(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	responses.JSON(c, http.StatusOK, "user", user.Serialize(), messages.UploadedAvatarSuccess)
 
 }

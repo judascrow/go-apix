@@ -101,7 +101,7 @@ func seedCasbinRule(db *gorm.DB) {
 	var casbinRule [2]models.CasbinRule
 
 	db.Where(&models.CasbinRule{PType: "p", V0: "1", V1: "/api/v1/users*"}).Attrs(models.CasbinRule{V2: "(GET)|(POST)|(PUT)|(DELETE)"}).FirstOrCreate(&casbinRule[0])
-	db.Where(&models.CasbinRule{PType: "p", V0: "2", V1: "/api/v1/users/*"}).Attrs(models.CasbinRule{V2: "(PUT)"}).FirstOrCreate(&casbinRule[1])
+	db.Where(&models.CasbinRule{PType: "p", V0: "2", V1: "/api/v1/users/*"}).Attrs(models.CasbinRule{V2: "(GET)|(PUT)"}).FirstOrCreate(&casbinRule[1])
 
 }
 

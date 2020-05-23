@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strings"
+
 	"github.com/gosimple/slug"
 	"github.com/jinzhu/gorm"
 )
@@ -25,6 +27,10 @@ type ChangePassword struct {
 	NewPassword     string `json:"new_password" form:"new_password" binding:"required" example:"password123"`      // รหัสผ่านใหม่
 }
 
+type UploadAvatar struct {
+	Avatar string `json:"avatar" form:"avatar" binding:"required" example:"avatar.png"` // รูปภาพ
+}
+
 func (u *User) BeforeSave(db *gorm.DB) (err error) {
 	u.Slug = slug.Make(u.Username)
 	if len(u.Roles) == 0 {
@@ -42,6 +48,8 @@ func (u User) Serialize() map[string]interface{} {
 		roles = append(roles, role.Serialize())
 	}
 
+	replaceAllFlag := -1
+
 	return map[string]interface{}{
 		"id":        u.ID,
 		"username":  u.Username,
@@ -50,7 +58,7 @@ func (u User) Serialize() map[string]interface{} {
 		"email":     u.Email,
 		"slug":      u.Slug,
 		"status":    u.Status,
-		"avatar":    u.Avatar,
+		"avatar":    strings.Replace(u.Avatar, "\\", "/", replaceAllFlag),
 		"roles":     roles,
 	}
 }
@@ -136,5 +144,12 @@ type SwagChangePasswordResponse struct {
 	Success bool        `json:"success" example:"true"`                         // ผลการเรียกใช้งาน
 	Status  int         `json:"status" example:"200"`                           // HTTP Status Code
 	Message string      `json:"message" example:"Change Password Successfully"` // ข้อความตอบกลับ
+	Data    interface{} `json:"data" `                                          // ข้อมูล
+}
+
+type SwagUploadAvatarResponse struct {
+	Success bool        `json:"success" example:"true"`                         // ผลการเรียกใช้งาน
+	Status  int         `json:"status" example:"200"`                           // HTTP Status Code
+	Message string      `json:"message" example:"Uploaded Avatar Successfully"` // ข้อความตอบกลับ
 	Data    interface{} `json:"data" `                                          // ข้อมูล
 }

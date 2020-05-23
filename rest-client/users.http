@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:8080/api/v1/users
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTAyMzIwNTQsIm9yaWdfaWF0IjoxNTkwMjI4NDU0LCJyb2xlcyI6WzJdLCJzbHVnIjoiZnByaWNlIiwidXNlcm5hbWUiOiJmUHJpY2UifQ.Lu6Ei6OAdEQ9WDDaz6VxLiXC5kf0L7KaTsfyxhDYIdY
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTAyMzU5MzIsIm9yaWdfaWF0IjoxNTkwMjMyMzMyLCJyb2xlcyI6WzJdLCJzbHVnIjoiZnByaWNlIiwidXNlcm5hbWUiOiJmUHJpY2UifQ.uO_SIh6lJxtxMTFErX-RrLpNbfyRxAKo7azTrv-QSBE
 
 ###
 
@@ -56,3 +56,15 @@ Authorization: Bearer {{token}}
 }
 
 ###
+
+# @name UploadAvatar
+PUT  {{baseUrl}}/fprice/avatar
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{token}}
+
+--MyBoundary
+Content-Disposition: form-data; name="avatar"; filename="golang.png"
+Content-Type: image/png
+
+< ../golang.png
+--MyBoundary--

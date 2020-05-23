@@ -14,4 +14,5 @@ const (
 	Deleted               = "Deleted successfully"
 	DataFound             = "Data Found"
 	ChangePasswordSuccess = "Change Password Successfully"
+	UploadedAvatarSuccess = "Uploaded Avatar Successfully"
 )

@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/judascrow/go-apix/api/controllers"
 	"github.com/judascrow/gomiddlewares"
@@ -36,6 +37,10 @@ func InitRouter() *gin.Engine {
 	}
 	r.Use(gin.Recovery())
 
+	r.MaxMultipartMemory = 8 << 20
+	// File Server
+	r.Use(static.Serve("/media", static.LocalFile("./media", false)))
+
 	// Routes
 	apiv1 := r.Group(os.Getenv("APP_API_BASE_URL"))
 
@@ -59,6 +64,7 @@ func InitRouter() *gin.Engine {
 		users.PUT("/:slug", controllers.UpdateUser)
 		users.DELETE("/:slug", controllers.DeleteUser)
 		users.PUT("/:slug/password", controllers.ChangePassword)
+		users.PUT("/:slug/avatar", controllers.UploadAvatar)
 	}
 
 	return r
