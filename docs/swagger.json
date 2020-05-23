@@ -11,6 +11,40 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
+        "/login": {
+            "post": {
+                "description": "เข้าสู่ระบบ",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "เข้าสู่ระบบ"
+                ],
+                "summary": "เข้าสู่ระบบ",
+                "parameters": [
+                    {
+                        "description": "ลงชื่อเข้าสู่ระบบ",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/routes.login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SwagLogin"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "รายการผู้ใช้งาน",
@@ -570,6 +604,35 @@
                 }
             }
         },
+        "models.SwagLogin": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "$ref": "#/definitions/models.SwagUser"
+                },
+                "message": {
+                    "description": "ข้อความตอบกลับ",
+                    "type": "string",
+                    "example": "User logged in successfully"
+                },
+                "status": {
+                    "description": "HTTP Status Code",
+                    "type": "integer",
+                    "example": 200
+                },
+                "success": {
+                    "description": "ผลการเรียกใช้งาน",
+                    "type": "boolean",
+                    "example": true
+                },
+                "token": {
+                    "description": "token",
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsI"
+                }
+            }
+        },
         "models.SwagPageMeta": {
             "type": "object",
             "properties": {
@@ -612,6 +675,10 @@
                 "requestedPageSize": {
                     "type": "integer",
                     "example": 10
+                },
+                "totalItemsCount": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "totalPagesCount": {
                     "type": "integer",
@@ -760,6 +827,21 @@
                     "description": "Username",
                     "type": "string",
                     "example": "user01"
+                }
+            }
+        },
+        "routes.login": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }

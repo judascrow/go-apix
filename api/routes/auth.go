@@ -37,6 +37,14 @@ var identityKey = "slug"
 var identityUsername = "username"
 var identityRoles = "roles"
 
+// @Summary เข้าสู่ระบบ
+// @Description เข้าสู่ระบบ
+// @Tags เข้าสู่ระบบ
+// @Accept  json
+// @Produce  json
+// @Param login body login true "ลงชื่อเข้าสู่ระบบ"
+// @Success 200 {object} models.SwagLogin
+// @Router /login [post]
 func AuthMiddlewareJWT() *jwt.GinJWTMiddleware {
 	db := infrastructure.GetDB()
 

@@ -37,6 +37,7 @@ type SwagPageMeta struct {
 	PrevPageUrl       string `json:"prevPageUrl" example:"/api/v1/users/addresses?page=1&pageSize=10"`
 	RequestedPageSize int    `json:"requestedPageSize" example:"10"`
 	TotalPagesCount   int    `json:"totalPagesCount" example:"1"`
+	TotalItemsCount   int    `json:"totalItemsCount" example:"1"`
 }
 
 type SwagError400 struct {
@@ -62,4 +63,12 @@ type SwagError500 struct {
 
 type SwagID struct {
 	ID uint `json:"id" example:"1"` // ID
+}
+
+type SwagLogin struct {
+	Success bool     `json:"success" example:"true"`                        // ผลการเรียกใช้งาน
+	Status  int      `json:"status" example:"200"`                          // HTTP Status Code
+	Message string   `json:"message" example:"User logged in successfully"` // ข้อความตอบกลับ
+	Token   string   `json:"token" example:"eyJhbGciOiJIUzI1NiIsI"`         // token
+	Data    SwagUser `json:"data" `
 }

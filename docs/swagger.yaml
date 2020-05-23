@@ -171,6 +171,28 @@ definitions:
         example: true
         type: boolean
     type: object
+  models.SwagLogin:
+    properties:
+      data:
+        $ref: '#/definitions/models.SwagUser'
+        type: object
+      message:
+        description: ข้อความตอบกลับ
+        example: User logged in successfully
+        type: string
+      status:
+        description: HTTP Status Code
+        example: 200
+        type: integer
+      success:
+        description: ผลการเรียกใช้งาน
+        example: true
+        type: boolean
+      token:
+        description: token
+        example: eyJhbGciOiJIUzI1NiIsI
+        type: string
+    type: object
   models.SwagPageMeta:
     properties:
       currentItemsCount:
@@ -202,6 +224,9 @@ definitions:
         type: string
       requestedPageSize:
         example: 10
+        type: integer
+      totalItemsCount:
+        example: 1
         type: integer
       totalPagesCount:
         example: 1
@@ -317,6 +342,16 @@ definitions:
         example: user01
         type: string
     type: object
+  routes.login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -326,6 +361,28 @@ info:
   title: Example API
   version: "1.0"
 paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: เข้าสู่ระบบ
+      parameters:
+      - description: ลงชื่อเข้าสู่ระบบ
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/routes.login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SwagLogin'
+      summary: เข้าสู่ระบบ
+      tags:
+      - เข้าสู่ระบบ
   /users:
     get:
       consumes:

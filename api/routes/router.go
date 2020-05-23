@@ -42,11 +42,14 @@ func InitRouter() *gin.Engine {
 	// swagger
 	apiv1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// healthcheck
 	apiv1.GET("/healthcheck", Healthcheck)
 
+	// auth
 	authMiddleware := AuthMiddlewareJWT()
 	apiv1.POST("/login", authMiddleware.LoginHandler)
 
+	// Users API
 	users := apiv1.Group("/users")
 	users.Use(authMiddleware.MiddlewareFunc())
 	{

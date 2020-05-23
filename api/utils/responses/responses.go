@@ -27,16 +27,18 @@ func JSONLIST(c *gin.Context, statusCode int, dataName string, data interface{},
 
 	pageSize := p.PageSize
 	page := p.Page
-	count := p.Count
+	totalItemsCount := p.TotalItemsCount
+	currentItemsCount := p.CurrentItemsCount
 
 	pageMeta := map[string]interface{}{}
 	pageMeta["offset"] = (page - 1) * pageSize
 	pageMeta["requestedPageSize"] = pageSize
 	pageMeta["currentPageNumber"] = page
-	pageMeta["currentItemsCount"] = count
+	pageMeta["currentItemsCount"] = currentItemsCount
+	pageMeta["totalItemsCount"] = totalItemsCount
 
 	pageMeta["prevPageNumber"] = 1
-	totalPagesCount := int(math.Ceil(float64(count) / float64(pageSize)))
+	totalPagesCount := int(math.Ceil(float64(totalItemsCount) / float64(pageSize)))
 	pageMeta["totalPagesCount"] = totalPagesCount
 
 	if page < totalPagesCount {

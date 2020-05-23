@@ -1,0 +1,58 @@
+@baseUrl = http://localhost:8080/api/v1/users
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTAyMzIwNTQsIm9yaWdfaWF0IjoxNTkwMjI4NDU0LCJyb2xlcyI6WzJdLCJzbHVnIjoiZnByaWNlIiwidXNlcm5hbWUiOiJmUHJpY2UifQ.Lu6Ei6OAdEQ9WDDaz6VxLiXC5kf0L7KaTsfyxhDYIdY
+
+###
+
+# @name GetAllUsers
+GET {{baseUrl}}/?pageSize=5&page=2
+Authorization: Bearer {{token}}
+
+###
+
+# @name GetUserBySlug
+GET {{baseUrl}}/fprice
+Authorization: Bearer {{token}}
+
+
+###
+
+# @name CreateUser
+POST {{baseUrl}}
+Authorization: Bearer {{token}}
+
+{
+	"username": "user01",
+	"email": "user01@email.com",
+	"firstName": "john",
+	"lastName": "doe",
+	"password": "12345678"
+}
+
+###
+
+# @name UpdateUser
+PUT {{baseUrl}}/fprice
+Authorization: Bearer {{token}}
+
+{
+	"status": "A"
+}
+
+###
+
+# @name DeleteUser
+DELETE  {{baseUrl}}/est
+Authorization: Bearer {{token}}
+
+###
+
+# @name ChangePassword
+PUT {{baseUrl}}/fprice/password
+Authorization: Bearer {{token}}
+
+{
+	"current_password": "12345678",
+	"new_password": "password"
+}
+
+###

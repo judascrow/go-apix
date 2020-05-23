@@ -14,9 +14,10 @@ func CreateOne(data interface{}) error {
 }
 
 type PageMeta struct {
-	Count    int `json:"count"`
-	PageSize int `json:"pageSize"`
-	Page     int `json:"page"`
+	TotalItemsCount   int `json:"totalItemsCount"`
+	CurrentItemsCount int `json:"currentItemsCount"`
+	PageSize          int `json:"pageSize"`
+	Page              int `json:"page"`
 }
 
 func getPageMeta(pageSizeStr, pageStr string) (pageMeta PageMeta) {

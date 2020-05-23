@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/judascrow/go-apix/api/models"
-	"github.com/judascrow/gomiddlewares/jwt"
 
 	"github.com/judascrow/go-apix/api/services"
 	"github.com/judascrow/go-apix/api/utils/messages"
@@ -145,6 +144,11 @@ func UpdateUser(c *gin.Context) {
 
 	slug := c.Param("slug")
 
+	if !ClaimsOwner(c, slug) {
+		responses.ERROR(c, http.StatusForbidden, messages.NotPermission)
+		return
+	}
+
 	var userData *models.User
 	err := c.BindJSON(&userData)
 	if err != nil {
@@ -267,37 +271,4 @@ func ChangePassword(c *gin.Context) {
 	}
 	responses.JSONNODATA(c, http.StatusOK, messages.ChangePasswordSuccess)
 
-}
-
-func verifyPassword(hashedPassword, password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-}
-
-func ClaimsOwner(c *gin.Context, slug string) bool {
-
-	claims := jwt.ExtractClaims(c)
-
-	var roles = claims["roles"].([]interface{})
-	for i := 0; i < len(roles); i++ {
-		if uint(roles[i].(float64)) == 1 {
-			return true
-		}
-	}
-
-	if slug == claims["slug"].(string) || ClaimsIsAdmin(claims) {
-		return true
-	}
-	return false
-}
-
-func ClaimsIsAdmin(claims jwt.MapClaims) bool {
-
-	var roles = claims["roles"].([]interface{})
-	for i := 0; i < len(roles); i++ {
-		if uint(roles[i].(float64)) == 1 {
-			return true
-		}
-	}
-
-	return false
 }

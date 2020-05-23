@@ -15,7 +15,8 @@ func FindAllUsers(pageSizeStr, pageStr string) ([]models.User, PageMeta, error) 
 	db.Model(&models.User{}).Count(&count)
 	err := db.Preload("Roles").Offset((pageMeta.Page - 1) * pageMeta.PageSize).Limit(pageMeta.PageSize).Find(&users).Error
 
-	pageMeta.Count = count
+	pageMeta.TotalItemsCount = count
+	pageMeta.CurrentItemsCount = len(users)
 
 	return users, pageMeta, err
 }
