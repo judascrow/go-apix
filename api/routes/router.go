@@ -52,8 +52,13 @@ func InitRouter() *gin.Engine {
 
 	// auth
 	authMiddleware := AuthMiddlewareJWT()
-	apiv1.POST("/login", authMiddleware.LoginHandler)
 
+	auth := apiv1.Group("/auth")
+	auth.POST("/login", authMiddleware.LoginHandler)
+	auth.Use(authMiddleware.MiddlewareFunc())
+	{
+		auth.GET("/me", controllers.GetUserMe)
+	}
 	// Users API
 	users := apiv1.Group("/users")
 	users.Use(authMiddleware.MiddlewareFunc())

@@ -53,9 +53,9 @@ Base Path: /api/v1
 
 ### Auth
 
-| Done               | Method | URI    | authorize | comment |
-| ------------------ | ------ | ------ | --------- | ------- |
-| :white_check_mark: | POST   | /login | No        | Log in  |
+| Done               | Method | URI         | authorize | comment |
+| ------------------ | ------ | ----------- | --------- | ------- |
+| :white_check_mark: | POST   | /auth/login | No        | Log in  |
 
 ### Users
 

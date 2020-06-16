@@ -44,7 +44,7 @@ var identityRoles = "roles"
 // @Produce  json
 // @Param login body login true "ลงชื่อเข้าสู่ระบบ"
 // @Success 200 {object} models.SwagLogin
-// @Router /login [post]
+// @Router /auth/login [post]
 func AuthMiddlewareJWT() *jwt.GinJWTMiddleware {
 	db := infrastructure.GetDB()
 

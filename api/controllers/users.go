@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/judascrow/go-apix/api/models"
+	jwt "github.com/judascrow/gomiddlewares/jwt"
 
 	"github.com/judascrow/go-apix/api/services"
 	"github.com/judascrow/go-apix/api/utils/messages"
@@ -15,6 +16,39 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
+
+// @Summary ข้อมูลตนเอง
+// @Description ข้อมูลตนเอง
+// @Tags ผู้ใช้งาน
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.SwagGetUserResponse
+// @Failure 400 {object} models.SwagError400
+// @Failure 404 {object} models.SwagError404
+// @Failure 500 {object} models.SwagError500
+// @Security ApiKeyAuth
+// @Router /auth/me [get]
+func GetUserMe(c *gin.Context) {
+
+	claims := jwt.ExtractClaims(c)
+
+	slug := claims["slug"].(string)
+
+	if !ClaimsOwner(c, slug) {
+		responses.ERROR(c, http.StatusForbidden, messages.NotPermission)
+		return
+	}
+
+	// Find User
+	user, err := services.FindOneUserBySlug(slug)
+	if err != nil {
+		responses.ERROR(c, http.StatusNotFound, messages.NotFound)
+		return
+	}
+
+	// Response
+	responses.JSON(c, http.StatusOK, "user", user.Serialize(), messages.DataFound)
+}
 
 // @Summary รายการผู้ใช้งาน
 // @Description รายการผู้ใช้งาน

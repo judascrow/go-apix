@@ -18,7 +18,8 @@ require (
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
 	github.com/jinzhu/gorm v1.9.12
 	github.com/joho/godotenv v1.3.0
-	github.com/judascrow/gomiddlewares v0.0.0-20200501024609-fff438ecf4ed
+	github.com/json-iterator/go v1.1.10 // indirect
+	github.com/judascrow/gomiddlewares v0.0.0-20200602081535-5d9916e77937
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/prometheus/client_golang v1.6.0 // indirect
 	github.com/sirupsen/logrus v1.6.0 // indirect
@@ -27,9 +28,11 @@ require (
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.6
 	github.com/zsais/go-gin-prometheus v0.1.0
+	go.uber.org/zap v1.15.0 // indirect
 	golang.org/x/crypto v0.0.0-20200510223506-06a226fb4e37
 	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2 // indirect
-	golang.org/x/sys v0.0.0-20200519105757-fe76b779f299 // indirect
+	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 	golang.org/x/tools v0.0.0-20200522201501-cb1345f3a375 // indirect
+	google.golang.org/protobuf v1.24.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
