@@ -59,14 +59,11 @@ func JSONLIST(c *gin.Context, statusCode int, dataName string, data interface{},
 	pageMeta["prevPageUrl"] = fmt.Sprintf("%s?page=%d&pageSize=%d", c.Request.URL.Path, pageMeta["prevPageNumber"], pageMeta["requestedPageSize"])
 
 	c.JSON(statusCode, gin.H{
-		"status":  statusCode,
-		"success": true,
-		"data": map[string]interface{}{
-			dataName:   data,
-			"pageMeta": pageMeta,
-		},
-
-		"message": message,
+		"status":   statusCode,
+		"success":  true,
+		"pageMeta": pageMeta,
+		"data":     data,
+		"message":  message,
 	})
 
 }

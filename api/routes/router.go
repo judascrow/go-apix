@@ -55,6 +55,8 @@ func InitRouter() *gin.Engine {
 
 	auth := apiv1.Group("/auth")
 	auth.POST("/login", authMiddleware.LoginHandler)
+	// Refresh time can be longer than token timeout
+	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
 	{
 		auth.GET("/me", controllers.GetUserMe)
