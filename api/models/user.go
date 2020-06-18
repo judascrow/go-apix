@@ -15,7 +15,7 @@ type User struct {
 	LastName  string `json:"lastName" form:"lastName" gorm:"type:varchar(100);not null" binding:"required"`
 	Email     string `json:"email" form:"email" gorm:"type:varchar(100);unique_index"`
 	Slug      string `json:"slug" form:"slug" uri:"slug"  gorm:"type:varchar(50);unique_index"`
-	Status    string `json:"status" form:"status" sql:"type:enum('A','I','C');DEFAULT:'A'"`
+	Status    string `json:"status" form:"status" sql:"type:enum('A','I');DEFAULT:'A'"`
 	Avatar    string `json:"avatar" form:"avatar" `
 
 	Roles     []Role     `json:"roles" gorm:"many2many:users_roles;"`

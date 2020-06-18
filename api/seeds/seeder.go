@@ -69,6 +69,40 @@ func seedAdmin(db *gorm.DB) {
 	}
 }
 
+func seedStaff(db *gorm.DB) {
+	count := 0
+	staffRole := models.Role{Name: "ROLE_STAFF", Description: "Only for staff"}
+	query := db.Model(&models.Role{}).Where("name = ?", "ROLE_STAFF")
+	query.Count(&count)
+
+	if count == 0 {
+		db.Create(&staffRole)
+	} else {
+		query.First(&staffRole)
+	}
+
+	staffRoleUsers := 0
+	var staffUsers []models.User
+	db.Model(&staffRole).Related(&staffUsers, "Users")
+
+	db.Model(&models.User{}).Where("username = ?", "staff").Count(&staffRoleUsers)
+	if staffRoleUsers == 0 {
+
+		// query.First(&adminRole) // First would fetch the Role admin because the query status name='ROLE_ADMIN'
+		password, _ := bcrypt.GenerateFromPassword([]byte("password"), bcrypt.DefaultCost)
+		// Approach 1
+		user := models.User{FirstName: "StaffFN", LastName: "StaffLN", Email: "staff@golang.com", Username: "staff", Password: string(password)}
+		user.Roles = append(user.Roles, staffRole)
+
+		// Do not try to update the adminRole
+		db.Set("gorm:association_autoupdate", false).Create(&user)
+
+		if db.Error != nil {
+			print(db.Error)
+		}
+	}
+}
+
 func seedUsers(db *gorm.DB) {
 	count := 0
 	role := models.Role{Name: "ROLE_USER", Description: "Only for standard users"}
@@ -98,10 +132,11 @@ func seedUsers(db *gorm.DB) {
 }
 
 func seedCasbinRule(db *gorm.DB) {
-	var casbinRule [2]models.CasbinRule
+	var casbinRule [3]models.CasbinRule
 
 	db.Where(&models.CasbinRule{PType: "p", V0: "1", V1: "/api/v1/*"}).Attrs(models.CasbinRule{V2: "(GET)|(POST)|(PUT)|(DELETE)"}).FirstOrCreate(&casbinRule[0])
-	db.Where(&models.CasbinRule{PType: "p", V0: "2", V1: "/api/v1/users/*"}).Attrs(models.CasbinRule{V2: "(GET)|(PUT)"}).FirstOrCreate(&casbinRule[1])
+	db.Where(&models.CasbinRule{PType: "p", V0: "2", V1: "/api/v1/*"}).Attrs(models.CasbinRule{V2: "(GET)|(POST)|(PUT)|(DELETE)"}).FirstOrCreate(&casbinRule[0])
+	db.Where(&models.CasbinRule{PType: "p", V0: "3", V1: "/api/v1/users/*"}).Attrs(models.CasbinRule{V2: "(GET)|(PUT)"}).FirstOrCreate(&casbinRule[1])
 
 }
 
@@ -109,6 +144,7 @@ func Seed() {
 	db := infrastructure.GetDB()
 	rand.Seed(time.Now().UnixNano())
 	seedAdmin(db)
+	seedStaff(db)
 	seedUsers(db)
 	seedCasbinRule(db)
 }
