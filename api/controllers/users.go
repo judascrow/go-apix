@@ -141,7 +141,7 @@ func CreateUser(c *gin.Context) {
 	userCond := models.User{Username: user.Username}
 	_, err = services.FindOneUser(userCond)
 	if err == nil {
-		errMessage := "username " + messages.IsAlreadyExists
+		errMessage := "ชื่อผู้ใช้งาน " + messages.IsAlreadyExists
 		responses.ERROR(c, http.StatusBadRequest, errMessage)
 		return
 	}

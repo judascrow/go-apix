@@ -3,7 +3,7 @@ package messages
 const (
 	// Error
 	InvalidSyntax   = "Invalid Syntax"
-	IsAlreadyExists = "is Already Exists"
+	IsAlreadyExists = "นี้มีอยู่ในระบบแล้ว"
 	NotFound        = "Not Found"
 	NotPermission   = "you don't have permission to manage this resource"
 

@@ -15,9 +15,7 @@ func JSON(c *gin.Context, statusCode int, dataName string, data interface{}, mes
 	c.JSON(statusCode, gin.H{
 		"status":  statusCode,
 		"success": true,
-		"data": map[string]interface{}{
-			dataName: data,
-		},
+		"data":    data,
 		"message": message,
 	})
 
